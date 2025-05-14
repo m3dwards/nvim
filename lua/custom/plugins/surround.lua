@@ -1,4 +1,7 @@
 return {
-  'tpope/vim-surround',
-  event = 'VeryLazy', -- or "BufReadPre" for earlier load
+  'kylechui/nvim-surround',
+  event = 'VeryLazy',
+  config = function()
+    require('nvim-surround').setup()
+  end,
 }
