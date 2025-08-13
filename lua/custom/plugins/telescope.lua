@@ -65,6 +65,20 @@ return {
             hijack_netrw = true,
           },
         },
+        defaults = {
+          vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden', -- include hidden files
+            '--glob',
+            '!.git/*', -- but exclude .git/
+          },
+        },
       }
       require('telescope').load_extension 'file_browser'
 
@@ -135,6 +149,15 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Live_grep including hidden files
+      -- vim.keymap.set('n', '<leader>sg', function()
+      --   require('telescope.builtin').live_grep {
+      --     additional_args = function()
+      --       return { '--hidden', '--glob', '!.git/*' }
+      --     end,
+      --   }
+      -- end, { desc = '[S]earch by [G]rep' })
     end,
   },
 }
