@@ -881,6 +881,10 @@ end
 
 vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
   callback = function()
+    if vim.bo.buftype ~= '' or vim.bo.modifiable == false then
+      return
+    end
+
     if #vim.api.nvim_buf_get_name(0) ~= 0 and vim.bo.buflisted then
       vim.cmd 'silent w'
 
