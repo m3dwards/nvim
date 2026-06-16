@@ -1,5 +1,4 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
-return {}
+-- lua/custom/plugins/init.lua
+-- This file is intentionally empty.
+-- Custom plugins are explicitly required from lua/custom/config.lua.
+-- Add new plugins as separate files in this directory and require them there.

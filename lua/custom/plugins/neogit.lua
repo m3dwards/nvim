@@ -1,20 +1,15 @@
-return {
-  {
-    'NeogitOrg/neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim', -- required
-      'sindrets/diffview.nvim', -- optional - Diff integration
+-- lua/custom/plugins/neogit.lua
+-- Git UI using neogit + diffview
+-- Note: plenary.nvim and telescope.nvim are already installed by init.lua
 
-      -- Only one of these is needed.
-      'nvim-telescope/telescope.nvim', -- optional
-      -- "ibhagwan/fzf-lua",              -- optional
-      -- "echasnovski/mini.pick",         -- optional
-    },
-    config = function()
-      local neogit = require 'neogit'
-      vim.keymap.set('n', '<leader>gs', function()
-        neogit.open { kind = 'auto' }
-      end, { desc = '[G]it [S]tatus' })
-    end,
-  },
+vim.pack.add {
+  'https://github.com/NeogitOrg/neogit',
+  'https://github.com/sindrets/diffview.nvim',
 }
+
+local neogit = require 'neogit'
+neogit.setup {}
+
+vim.keymap.set('n', '<leader>gs', function()
+  neogit.open { kind = 'auto' }
+end, { desc = '[G]it [S]tatus' })
