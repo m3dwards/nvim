@@ -17,11 +17,10 @@ require 'kickstart.plugins.gitsigns'
 
 -- ============================================================
 -- CUSTOM PLUGINS
--- Each plugin lives in its own file under lua/custom/plugins/
+-- All files in lua/custom/plugins/ are loaded automatically.
+-- Add a new .lua file there to add a new plugin.
 -- ============================================================
-require 'custom.plugins.copilot'
-require 'custom.plugins.neogit'
-require 'custom.plugins.telescope'
+require 'custom.plugins'
 
 -- ============================================================
 -- CUSTOM CONFIGURATION
