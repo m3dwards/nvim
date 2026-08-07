@@ -692,7 +692,21 @@ do
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
-    -- clangd = {},
+    clangd = {
+      -- Match the indexer to the toolchain each project builds with.
+      -- Bitcoin Core builds with Apple clang on macOS, so use Apple's clangd
+      -- there; everywhere else (incl. Linux) fall back to the default clangd.
+      cmd = (function()
+        local default = { 'clangd', '--background-index', '--clang-tidy' }
+        if vim.fn.has 'mac' ~= 1 then return default end
+        -- Detect which repo we're opening, robust to launch directory.
+        local first = vim.fn.argv(0)
+        local start = (type(first) == 'string' and first ~= '') and vim.fn.fnamemodify(first, ':p') or vim.uv.cwd()
+        local root = vim.fs.root(start, { '.git' }) or vim.uv.cwd()
+        if root and vim.fs.basename(root) == 'bitcoin' then return { '/usr/bin/clangd', '--background-index', '--clang-tidy' } end
+        return default
+      end)(),
+    },
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
