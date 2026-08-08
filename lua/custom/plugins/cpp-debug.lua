@@ -30,20 +30,31 @@ vim.schedule(function()
     },
   }
 
+  -- Don't auto-break on C++ throw/catch (avoids stopping in __cxa_throw with no source).
+  dap.defaults.fallback.exception_breakpoints = {}
+
+  -- Launch config as a callable table: dap invokes the __call metamethod after
+  -- the config is picked (see dap.prepare_config), so the prompts run in a
+  -- guaranteed order (executable first, then args) rather than the
+  -- non-deterministic order of function-valued fields.
+  local launch_codelldb = setmetatable({ name = 'Launch (codelldb)' }, {
+    __call = function()
+      local program = vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      local args = vim.split(vim.fn.input 'Args: ', ' ', { trimempty = true })
+      return {
+        name = 'Launch (codelldb)',
+        type = 'codelldb',
+        request = 'launch',
+        program = program,
+        args = args,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+      }
+    end,
+  })
+
   local cpp_config = {
-    {
-      name = 'Launch (codelldb)',
-      type = 'codelldb',
-      request = 'launch',
-      program = function()
-        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-      end,
-      cwd = '${workspaceFolder}',
-      stopOnEntry = false,
-      args = function()
-        return vim.split(vim.fn.input 'Args: ', ' ', { trimempty = true })
-      end,
-    },
+    launch_codelldb,
     {
       name = 'Attach to process (codelldb)',
       type = 'codelldb',
