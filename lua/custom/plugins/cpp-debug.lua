@@ -40,7 +40,9 @@ vim.schedule(function()
       end,
       cwd = '${workspaceFolder}',
       stopOnEntry = false,
-      args = {},
+      args = function()
+        return vim.split(vim.fn.input 'Args: ', ' ', { trimempty = true })
+      end,
     },
     {
       name = 'Attach to process (codelldb)',
