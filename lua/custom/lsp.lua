@@ -25,6 +25,13 @@ mason_ensure_installed 'pyright'
 -- there; everywhere else (incl. Linux) fall back to the default clangd.
 local clangd_cmd = (function()
   local default = { 'clangd', '--background-index', '--clang-tidy' }
+  -- On Nix the compiler wrapper and the dev shell supply the standard library
+  -- and dependency include paths, and neither reaches compile_commands.json.
+  -- Let clangd ask the compiler for its search list, rather than pinning store
+  -- paths that move on every update.
+  if vim.fn.has 'linux' == 1 then
+    table.insert(default, '--query-driver=/nix/store/*/bin/g++,/nix/store/*/bin/clang++')
+  end
   if vim.fn.has 'mac' ~= 1 then return default end
   -- Detect which repo we're opening, robust to launch directory.
   local first = vim.fn.argv(0)
