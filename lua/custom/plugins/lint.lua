@@ -1,8 +1,9 @@
 -- lua/custom/plugins/lint.lua
 --
--- kickstart's lint plugin lints markdown with `markdownlint`, the deprecated npm
--- markdownlint-cli binary. nixpkgs ships markdownlint-cli2, which nvim-lint also
--- knows about, so point the filetype at that instead of shelling out to
--- something that is not installed (it used to fail on every markdown buffer with
--- "Error running markdownlint: ENOENT").
-require('lint').linters_by_ft.markdown = { 'markdownlint-cli2' }
+-- No linting on prose. kickstart's lint plugin lints markdown with
+-- `markdownlint` (the deprecated npm markdownlint-cli binary) on every BufEnter
+-- and write, which is not wanted here: markdown is the only filetype nvim-lint
+-- is configured for, so clearing it turns linting off altogether. Markdown keeps
+-- treesitter highlighting and LSP diagnostics.
+require('lint').linters_by_ft.markdown = nil
+
