@@ -1,23 +1,10 @@
 -- lua/custom/lsp.lua
 -- Additional LSP server configurations beyond kickstart defaults.
-
-local function mason_ensure_installed(tool)
-  vim.schedule(function()
-    local ok, registry = pcall(require, 'mason-registry')
-    if not ok then return end
-    registry.refresh(function()
-      if not registry.is_installed(tool) then
-        local pkg = registry.get_package(tool)
-        if pkg then pkg:install() end
-      end
-    end)
-  end)
-end
+-- Server binaries come from nixpkgs (~/source/nix/home/common.nix), not Mason.
 
 -- Python LSP
 vim.lsp.config('pyright', {})
 vim.lsp.enable('pyright')
-mason_ensure_installed 'pyright'
 
 -- C/C++ LSP
 -- Match the indexer to the toolchain each project builds with.
@@ -43,7 +30,6 @@ end)()
 
 vim.lsp.config('clangd', { cmd = clangd_cmd })
 vim.lsp.enable('clangd')
-mason_ensure_installed 'clangd'
 
 -- Switch between header and source file (clangd-specific)
 vim.api.nvim_create_autocmd('LspAttach', {

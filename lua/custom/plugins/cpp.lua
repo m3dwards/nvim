@@ -19,14 +19,6 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
--- Ensure clang-format is installed via Mason
-vim.schedule(function()
-  local ok, registry = pcall(require, 'mason-registry')
-  if not ok then return end
-  registry.refresh(function()
-    if not registry.is_installed 'clang-format' then
-      local pkg = registry.get_package 'clang-format'
-      if pkg then pkg:install() end
-    end
-  end)
-end)
+-- clang-format, like clangd, comes from nixpkgs (`clang-tools` in
+-- ~/source/nix/home/common.nix); Mason is not asked for it.
+

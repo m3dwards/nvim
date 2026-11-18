@@ -41,7 +41,8 @@ require('mason-nvim-dap').setup {
   -- online, please don't ask me how to install them :)
   ensure_installed = {
     -- Update this to ensure that you have the debuggers for the langs you want
-    'delve',
+    -- (removed upstream's `delve`: Go debugging needs a Go toolchain, which
+    -- this host deliberately does not have. C/C++ uses codelldb instead.)
   },
 }
 
